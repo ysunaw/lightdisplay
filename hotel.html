@@ -1,0 +1,94 @@
+  <!DOCTYPE html>
+<html>
+<head>
+
+<title>Room Display</title>
+</head>
+<body>
+<button onclick = "receive_print()";>receive and print</button>
+  <button onclick="lightchanges();">Light</button>
+  <button onclick="curtainchanges();">Curtain</button>
+<div id = 'light on curtain close' style = "display:none" >
+    <image src = "10.jpeg" alt = "light on cur close">
+    <p> The hotel light has been turned on for you. </p>
+
+</div>
+<div id = 'light off curtain close' style = "display:none">
+    <image src = "01.jpeg" alt = "light off cur close">
+    <p> The hotel light has been turned off for you. </p>
+</div>
+<div id = 'light on curtain open' style = "display:block"  >
+    <image src = "11.jpeg" alt = "light on cur open">
+    <p> The hotel light has been turned on for you. </p>
+
+</div>
+<div id = 'light off curtain open' style = "display:none">
+    <image src = "00.jpeg" alt = "light off cur close">
+    <p> The hotel light has been turned off for you. </p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+
+<script>
+
+// function sendAndWaitToOutputAPIAI(userInputToSend){
+//   // Show user input
+//   display_speech(userInputToSend);
+//   // Notify the server to send api.ai this input
+//   socket.emit("send_to_apiai", [userInputToSend, isConnectToDemoAgent]);
+//   sysCanOutput = true;
+//   // Wait for the response from the server along with the response from api.ai
+//   socket.on("response_from_apiai", function(response){
+//     console.log("response_from_apiai: " + response);
+//     // Speak out the response
+//     produce_voice_output(response);
+//   });
+// }
+var socket = io("http://localhost:5000");
+
+console.log("hhh")
+socket.on('message', function(response){
+  console.log("response_from_apiai: " + response);
+  // Speak out the response
+  // produce_voice_output(response);
+});
+// function display_speech(msg) {
+//   document.getElementById("display_text").innerHTML = msg;
+// }
+
+var x = document.getElementById('light on curtain close');
+var y = document.getElementById('light off curtain close');
+var z = document.getElementById('light on curtain open');
+var w = document.getElementById('light off curtain open');
+function lightchanges(){
+  socket.emit('message',"steeve is a pig")
+  if(x.style.display === 'block'){replace(y,x);}
+  else if(y.style.display === 'block'){replace(x,y);}
+  else if(z.style.display === 'block'){replace(w,z);}
+  else if(w.style.display === 'block'){replace(z,w);}
+}
+function curtainchanges(){
+  if(x.style.display === 'block'){replace(z,x);}
+  else if(y.style.display === 'block'){replace(w,y);}
+  else if(z.style.display === 'block'){replace(x,z);}
+  else if(w.style.display === 'block'){replace(y,w);}
+}
+
+function replace(on, off) {
+  //replace off with on
+  on.style.display="block";
+  off.style.display="none";
+}
+/*function lightchanges(){
+  var x = document.getElementById('light on');
+  var y = document.getElementById('light off');
+  if(x.style.display === 'none'){
+    x.style.display = 'block';
+    y.style.display = 'none';
+  }else {
+    x.style.display = 'none';
+    y.style.display = 'block';
+  }
+}*/
+</script>
+</body>
+</html>
