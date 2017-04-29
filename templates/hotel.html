@@ -30,22 +30,8 @@
 
 <script>
 
-// function sendAndWaitToOutputAPIAI(userInputToSend){
-//   // Show user input
-//   display_speech(userInputToSend);
-//   // Notify the server to send api.ai this input
-//   socket.emit("send_to_apiai", [userInputToSend, isConnectToDemoAgent]);
-//   sysCanOutput = true;
-//   // Wait for the response from the server along with the response from api.ai
-//   socket.on("response_from_apiai", function(response){
-//     console.log("response_from_apiai: " + response);
-//     // Speak out the response
-//     produce_voice_output(response);
-//   });
-// }
-var socket = io("http://localhost:5000");
+var socket = io();
 
-console.log("hhh")
 socket.on('message', function(response){
   console.log("response_from_apiai: " + response);
   // Speak out the response
