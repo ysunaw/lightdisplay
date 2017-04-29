@@ -31,4 +31,4 @@ if __name__ == '__main__':
     except ValueError:
         PORT = 5009
 #    app.run(HOST, PORT)
-    socketio.run(app, port =  PORT, host= '0.0.0.0')
+    socketio.run(app, port =  PORT, host= '0.0.0.1')
