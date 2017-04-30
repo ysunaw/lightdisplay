@@ -5,9 +5,9 @@
 <title>Room Display</title>
 </head>
 <body>
-<button onclick = "receive_print()";>receive and print</button>
+<!-- <button onclick = "receive_print()";>receive and print</button>
   <button onclick="lightchanges();">Light</button>
-  <button onclick="curtainchanges();">Curtain</button>
+  <button onclick="curtainchanges();">Curtain</button> -->
 <div id = 'light on curtain close' style = "display:none" >
     <image src = "/static/10.jpeg" alt = "light on cur close">
     <p> The hotel light has been turned on for you. </p>
@@ -93,7 +93,7 @@ function receive_print(){
   var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            console.log("connected !!!!! ");
+            console.log("connected !!!!!");
     }
     xmlHttp.open("GET", theUrl, true); // true for asynchronous
     xmlHttp.send(null);
