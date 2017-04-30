@@ -1,7 +1,7 @@
   <!DOCTYPE html>
 <html>
 <head>
-
+<meta name ="viewport"content ="width=device-width,initial-scale=1.0">
 <title>Room Display</title>
 </head>
 <body>
@@ -10,21 +10,21 @@
   <button onclick="curtainchanges();">Curtain</button> -->
 <div id = 'light on curtain close' style = "display:none" >
     <image src = "/static/10.jpeg" alt = "light on cur close">
-    <p> The hotel light has been turned on for you. </p>
+    <!-- <p> The hotel light has been turned on for you. </p> -->
 
 </div>
 <div id = 'light off curtain close' style = "display:none">
     <image src = "/static/01.jpeg" alt = "light off cur close">
-    <p> The hotel light has been turned off for you. </p>
+    <!-- <p> The hotel light has been turned off for you. </p> -->
 </div>
 <div id = 'light on curtain open' style = "display:block"  >
     <image src = "/static/11.jpeg" alt = "light on cur open">
-    <p> The hotel light has been turned on for you. </p>
+    <!-- <p> The hotel light has been turned on for you. </p> -->
 
 </div>
 <div id = 'light off curtain open' style = "display:none">
     <image src = "/static/00.jpeg" alt = "light off cur close">
-    <p> The hotel light has been turned off for you. </p>
+    <!-- <p> The hotel light has been turned off for you. </p> -->
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
 
@@ -43,7 +43,7 @@ var socket = io();
   socket.on('api',function(response){
     console.log("response from apiai:" + response);
     console.log(response['action']);
-    change_from_action(response); 
+    change_from_action(response);
   });
   function change_from_action(response){
     if(response['facility'] === 'light' ){
@@ -64,7 +64,7 @@ var socket = io();
       if(response['action'] === 'pull up'){
         if(light_on_curtain_close.style.display === 'block'){replace(light_on_curtain_open,light_on_curtain_close);}
       else if(light_off_curtain_close.style.display === 'block'){replace(light_off_curtain_open,light_off_curtain_close);}
-      }    
+      }
     }
 }
 
@@ -91,7 +91,7 @@ function replace(on, off) {
 function receive_print(){
   theUrl = 'http://localhost:5009/api'
   var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
+    xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             console.log("connected !!!!!");
     }
