@@ -29,40 +29,75 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
 
 <script>
-
+var light_on_curtain_close = document.getElementById('light on curtain close');
+var light_off_curtain_close = document.getElementById('light off curtain close');
+var light_on_curtain_open = document.getElementById('light on curtain open');
+var light_off_curtain_open = document.getElementById('light off curtain open');
 var socket = io();
+// socket.on('api',function(response){
+//   console.log(response);
+// });
+// socket.on('message', function(response){
+//   console.log("response_from_apiai: " + response);
+// });
+  socket.on('api',function(response){
+    console.log("response from apiai:" + response);
+    console.log(response['action']);
+    change_from_action(response); 
+  });
+  function change_from_action(response){
+    if(response['facility'] === 'light' ){
+      if(response['action'] === 'turn on'){
+        if(light_off_curtain_close.style.display === 'block'){replace(light_on_curtain_close,light_off_curtain_close);}
+        else if(light_off_curtain_open.style.display === 'block'){replace(light_on_curtain_open,light_off_curtain_open);}
+      }
+      if(response['action'] === 'turn off'){
+        if(light_on_curtain_close.style.display === 'block'){replace(light_off_curtain_close,light_on_curtain_close);}
+        else if(light_on_curtain_open.style.display === 'block'){replace(light_off_curtain_open,light_on_curtain_open );}
+       }
+    }
+    if(response['facility'] === 'curtain'){
+      if(response['action'] === 'pull down'){
+        if(light_on_curtain_open.style.display === 'block'){replace(light_on_curtain_close,light_on_curtain_open);}
+        else if(light_off_curtain_open.style.display === 'block'){replace(light_off_curtain_close,light_off_curtain_open);}
+      }
+      if(response['action'] === 'pull up'){
+        if(light_on_curtain_close.style.display === 'block'){replace(light_on_curtain_open,light_on_curtain_close);}
+      else if(light_off_curtain_close.style.display === 'block'){replace(light_off_curtain_open,light_off_curtain_close);}
+      }    
+    }
+}
 
-socket.on('message', function(response){
-  console.log("response_from_apiai: " + response);
-  // Speak out the response
-  // produce_voice_output(response);
-});
-// function display_speech(msg) {
-//   document.getElementById("display_text").innerHTML = msg;
+
+// function lightchanges(){
+//   // socket.emit('message',"steeve is a pig")
+//   if(light_on_curtain_close.style.display === 'block'){replace(light_off_curtain_close,light_on_curtain_close);}
+//   else if(light_off_curtain_close.style.display === 'block'){replace(light_on_curtain_close,light_off_curtain_close);}
+//   else if(light_on_curtain_open .style.display === 'block'){replace(light_off_curtain_open,light_on_curtain_open );}
+//   else if(light_off_curtain_open.style.display === 'block'){replace(light_on_curtain_open,light_off_curtain_open);}
 // }
-
-var x = document.getElementById('light on curtain close');
-var y = document.getElementById('light off curtain close');
-var z = document.getElementById('light on curtain open');
-var w = document.getElementById('light off curtain open');
-function lightchanges(){
-  socket.emit('message',"steeve is a pig")
-  if(x.style.display === 'block'){replace(y,x);}
-  else if(y.style.display === 'block'){replace(x,y);}
-  else if(z.style.display === 'block'){replace(w,z);}
-  else if(w.style.display === 'block'){replace(z,w);}
-}
-function curtainchanges(){
-  if(x.style.display === 'block'){replace(z,x);}
-  else if(y.style.display === 'block'){replace(w,y);}
-  else if(z.style.display === 'block'){replace(x,z);}
-  else if(w.style.display === 'block'){replace(y,w);}
-}
+// function curtainchanges(){
+//   if(light_on_curtain_close.style.display === 'block'){replace(light_on_curtain_open,light_on_curtain_close);}
+//   else if(light_off_curtain_close.style.display === 'block'){replace(light_off_curtain_open,light_off_curtain_close);}
+//   else if(light_on_curtain_open.style.display === 'block'){replace(light_on_curtain_close,light_on_curtain_open );}
+//   else if(light_off_curtain_open.style.display === 'block'){replace(light_off_curtain_close,light_off_curtain_open);}
+// }
 
 function replace(on, off) {
   //replace off with on
   on.style.display="block";
   off.style.display="none";
+}
+function receive_print(){
+  theUrl = 'http://localhost:5009/api'
+  var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log("connected !!!!! ");
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.send(null);
+
 }
 /*function lightchanges(){
   var x = document.getElementById('light on');

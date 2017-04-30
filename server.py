@@ -1,5 +1,5 @@
 from __future__ import print_function
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 from flask_socketio import SocketIO
 import sys
 app = Flask(__name__)
@@ -19,6 +19,16 @@ def handle_message(message):
     print(message, file=sys.stderr)
     send(message)
 
+@app.route('/api')
+def api():
+	print("request",file = sys.stderr)
+	print (request,file = sys.stderr)
+	action = request.args.get('action')
+	facility = request.args.get('facility')
+	print (action , file = sys.stderr)
+	
+	socketio.emit('api',{'action': action, 'facility' : facility})
+	return render_template("hotel.html")
 
 @app.route('/')
 def index():
