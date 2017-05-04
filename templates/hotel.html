@@ -9,39 +9,39 @@
   <button onclick="lightchanges();">Light</button>
   <button onclick="curtainchanges();">Curtain</button> -->
 <div id = 'light on curtain close tv off' style = "display:none" >
-    <image src = "/static/100.jpeg" alt = "light on cur close" width = "1500">
+    <image src = "/static/100.jpeg" alt = "light on cur close" width = "1000">
     <!-- <p> The hotel light has been turned on for you. </p> -->
 
 </div>
 <div id = 'light on curtain close tv on' style = "display:none" >
-    <image src = "/static/101.jpeg" alt = "light on cur close" width = "1500">
+    <image src = "/static/101.jpeg" alt = "light on cur close" width = "1000">
     <!-- <p> The hotel light has been turned on for you. </p> -->
 
 </div>
 <div id = 'light off curtain close tv off' style = "display:none">
-    <image src = "/static/000.jpeg" alt = "light off cur close" width = "1500">
+    <image src = "/static/000.jpeg" alt = "light off cur close" width = "1000">
     <!-- <p> The hotel light has been turned off for you. </p> -->
 </div>
 <div id = 'light off curtain close tv on' style = "display:none">
-    <image src = "/static/001.jpeg" alt = "light off cur close" width = "1500">
+    <image src = "/static/001.jpeg" alt = "light off cur close" width = "1000">
     <!-- <p> The hotel light has been turned off for you. </p> -->
 </div>
 <div id = 'light on curtain open tv off' style = "display:block"  >
-    <image src = "/static/110.jpeg" alt = "light on cur open" width = "1500">
+    <image src = "/static/110.jpeg" alt = "light on cur open" width = "1000">
     <!-- <p> The hotel light has been turned on for you. </p> -->
 
 </div>
 <div id = 'light on curtain open tv on' style = "display:none"  >
-    <image src = "/static/111.jpeg" alt = "light on cur open" width = "1500">
+    <image src = "/static/111.jpeg" alt = "light on cur open" width = "1000">
     <!-- <p> The hotel light has been turned on for you. </p> -->
 
 </div>
 <div id = 'light off curtain open tv off' style = "display:none">
-    <image src = "/static/010.jpeg" alt = "light off cur close" width = "1500">
+    <image src = "/static/010.jpeg" alt = "light off cur close" width = "1000">
     <!-- <p> The hotel light has been turned off for you. </p> -->
 </div>
 <div id = 'light off curtain open tv on' style = "display:none">
-    <image src = "/static/011.jpeg" alt = "light off cur close" width = "1500">
+    <image src = "/static/011.jpeg" alt = "light off cur close" width = "1000">
     <!-- <p> The hotel light has been turned off for you. </p> -->
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
@@ -55,6 +55,7 @@ var light_on_curtain_open_tv_on = document.getElementById('light on curtain open
 var light_on_curtain_open_tv_off = document.getElementById('light on curtain open tv off');
 var light_off_curtain_open_tv_on = document.getElementById('light off curtain open tv on');
 var light_off_curtain_open_tv_off = document.getElementById('light off curtain open tv off');
+var current_mode = light_on_curtain_open_tv_off ;
 var socket = io();
 // socket.on('api',function(response){
 //   console.log(response);
@@ -65,7 +66,7 @@ var socket = io();
   socket.on('api_mode',function(response){
     console.log("response from apiai/mode:" + response);
     console.log(response['action']);
-    change_from_action(response);
+    switch_mode(response);
   });
   socket.on('api_facility',function(response){
     console.log("response from apiai/facility:" + response);
@@ -129,12 +130,28 @@ var socket = io();
 //   else if(light_on_curtain_open.style.display === 'block'){replace(light_on_curtain_close,light_on_curtain_open );}
 //   else if(light_off_curtain_open.style.display === 'block'){replace(light_off_curtain_close,light_off_curtain_open);}
 // }
+function switch_mode(response){
+  if(response['mode'] === 'sleep'){
+    if(current_mode !== light_off_curtain_close_tv_off){replace(light_off_curtain_close_tv_off, current_mode);}
+  }
+  if(response['mode'] === 'chill'){
+    change_from_action({'action': 'turn on', 'facility' : 'TV'});
 
+  }
+  if(response['mode'] === 'work'){
+    if(current_mode !== light_on_curtain_close_tv_off){replace(light_on_curtain_close_tv_off,current_mode);}
+  }
+  if(response['mode' === 'wake up']){
+    if(current_mode !== light_on_curtain_open_tv_off){replace(light_on_curtain_open_tv_off, current_mode);}
+  }
+}
 function replace(on, off) {
   //replace off with on
   on.style.display="block";
   off.style.display="none";
+  current_mode = on ;
 }
+
 function receive_print(){
   theUrl = 'http://localhost:5009/api/facility'
   var xmlHttp = new XMLHttpRequest();
