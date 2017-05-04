@@ -8,31 +8,53 @@
 <!-- <button onclick = "receive_print()";>receive and print</button>
   <button onclick="lightchanges();">Light</button>
   <button onclick="curtainchanges();">Curtain</button> -->
-<div id = 'light on curtain close' style = "display:none" >
-    <image src = "/static/10.jpeg" alt = "light on cur close">
+<div id = 'light on curtain close tv off' style = "display:none" >
+    <image src = "/static/100.jpeg" alt = "light on cur close" width = "1500">
     <!-- <p> The hotel light has been turned on for you. </p> -->
 
 </div>
-<div id = 'light off curtain close' style = "display:none">
-    <image src = "/static/01.jpeg" alt = "light off cur close">
+<div id = 'light on curtain close tv on' style = "display:none" >
+    <image src = "/static/101.jpeg" alt = "light on cur close" width = "1500">
+    <!-- <p> The hotel light has been turned on for you. </p> -->
+
+</div>
+<div id = 'light off curtain close tv off' style = "display:none">
+    <image src = "/static/000.jpeg" alt = "light off cur close" width = "1500">
     <!-- <p> The hotel light has been turned off for you. </p> -->
 </div>
-<div id = 'light on curtain open' style = "display:block"  >
-    <image src = "/static/11.jpeg" alt = "light on cur open">
+<div id = 'light off curtain close tv on' style = "display:none">
+    <image src = "/static/001.jpeg" alt = "light off cur close" width = "1500">
+    <!-- <p> The hotel light has been turned off for you. </p> -->
+</div>
+<div id = 'light on curtain open tv off' style = "display:block"  >
+    <image src = "/static/110.jpeg" alt = "light on cur open" width = "1500">
     <!-- <p> The hotel light has been turned on for you. </p> -->
 
 </div>
-<div id = 'light off curtain open' style = "display:none">
-    <image src = "/static/00.jpeg" alt = "light off cur close">
+<div id = 'light on curtain open tv on' style = "display:none"  >
+    <image src = "/static/111.jpeg" alt = "light on cur open" width = "1500">
+    <!-- <p> The hotel light has been turned on for you. </p> -->
+
+</div>
+<div id = 'light off curtain open tv off' style = "display:none">
+    <image src = "/static/010.jpeg" alt = "light off cur close" width = "1500">
+    <!-- <p> The hotel light has been turned off for you. </p> -->
+</div>
+<div id = 'light off curtain open tv on' style = "display:none">
+    <image src = "/static/011.jpeg" alt = "light off cur close" width = "1500">
     <!-- <p> The hotel light has been turned off for you. </p> -->
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
 
 <script>
-var light_on_curtain_close = document.getElementById('light on curtain close');
-var light_off_curtain_close = document.getElementById('light off curtain close');
-var light_on_curtain_open = document.getElementById('light on curtain open');
-var light_off_curtain_open = document.getElementById('light off curtain open');
+var light_on_curtain_close_tv_on = document.getElementById('light on curtain close tv on');
+var light_on_curtain_close_tv_off = document.getElementById('light on curtain close tv off');
+var light_off_curtain_close_tv_on = document.getElementById('light off curtain close tv on');
+var light_off_curtain_close_tv_off = document.getElementById('light off curtain close tv off');
+var light_on_curtain_open_tv_on = document.getElementById('light on curtain open tv on');
+var light_on_curtain_open_tv_off = document.getElementById('light on curtain open tv off');
+var light_off_curtain_open_tv_on = document.getElementById('light off curtain open tv on');
+var light_off_curtain_open_tv_off = document.getElementById('light off curtain open tv off');
 var socket = io();
 // socket.on('api',function(response){
 //   console.log(response);
@@ -40,35 +62,60 @@ var socket = io();
 // socket.on('message', function(response){
 //   console.log("response_from_apiai: " + response);
 // });
-  socket.on('api',function(response){
-    console.log("response from apiai:" + response);
+  socket.on('api_mode',function(response){
+    console.log("response from apiai/mode:" + response);
+    console.log(response['action']);
+    change_from_action(response);
+  });
+  socket.on('api_facility',function(response){
+    console.log("response from apiai/facility:" + response);
     console.log(response['action']);
     change_from_action(response);
   });
   function change_from_action(response){
     if(response['facility'] === 'light' ){
       if(response['action'] === 'turn on'){
-        if(light_off_curtain_close.style.display === 'block'){replace(light_on_curtain_close,light_off_curtain_close);}
-        else if(light_off_curtain_open.style.display === 'block'){replace(light_on_curtain_open,light_off_curtain_open);}
+        if(light_off_curtain_close_tv_on.style.display === 'block'){replace(light_on_curtain_close_tv_on,light_off_curtain_close_tv_on);}
+        else if(light_off_curtain_close_tv_off.style.display === 'block'){replace(light_on_curtain_close_tv_off,light_off_curtain_close_tv_off);}
+        else if(light_off_curtain_open_tv_on.style.display === 'block'){replace(light_on_curtain_open_tv_on,light_off_curtain_open_tv_on);}
+        else if(light_off_curtain_open_tv_off.style.display === 'block'){replace(light_on_curtain_open_tv_off,light_off_curtain_open_tv_off);}
       }
       if(response['action'] === 'turn off'){
-        if(light_on_curtain_close.style.display === 'block'){replace(light_off_curtain_close,light_on_curtain_close);}
-        else if(light_on_curtain_open.style.display === 'block'){replace(light_off_curtain_open,light_on_curtain_open );}
+        if(light_on_curtain_close_tv_on.style.display === 'block'){replace(light_off_curtain_close_tv_on,light_on_curtain_close_tv_on);}
+        else if (light_on_curtain_close_tv_off.style.display === 'block'){replace(light_off_curtain_close_tv_off,light_on_curtain_close_tv_off);}
+        else if(light_on_curtain_open_tv_on.style.display === 'block'){replace(light_off_curtain_open_tv_on,light_on_curtain_open_tv_on );}
+        else if(light_on_curtain_open_tv_off.style.display === 'block'){replace(light_off_curtain_open_tv_off,light_on_curtain_open_tv_off );}
        }
     }
     if(response['facility'] === 'curtain'){
       if(response['action'] === 'pull down'){
-        if(light_on_curtain_open.style.display === 'block'){replace(light_on_curtain_close,light_on_curtain_open);}
-        else if(light_off_curtain_open.style.display === 'block'){replace(light_off_curtain_close,light_off_curtain_open);}
+        if(light_on_curtain_open_tv_on.style.display === 'block'){replace(light_on_curtain_close_tv_on,light_on_curtain_open_tv_on);}
+        else if(light_on_curtain_open_tv_off.style.display === 'block'){replace(light_on_curtain_close_tv_off,light_on_curtain_open_tv_off);}
+        else if(light_off_curtain_open_tv_on.style.display === 'block'){replace(light_off_curtain_close_tv_on,light_off_curtain_open_tv_on);}
+        else if(light_off_curtain_open_tv_off.style.display === 'block'){replace(light_off_curtain_close_tv_off,light_off_curtain_open_tv_off);}
       }
       if(response['action'] === 'pull up'){
-        if(light_on_curtain_close.style.display === 'block'){replace(light_on_curtain_open,light_on_curtain_close);}
-      else if(light_off_curtain_close.style.display === 'block'){replace(light_off_curtain_open,light_off_curtain_close);}
+        if(light_on_curtain_close_tv_on.style.display === 'block'){replace(light_on_curtain_open_tv_on,light_on_curtain_close_tv_on);}
+        else if(light_on_curtain_close_tv_off.style.display === 'block'){replace(light_on_curtain_open_tv_off,light_on_curtain_close_tv_off);}
+        else if(light_off_curtain_close_tv_on.style.display === 'block'){replace(light_off_curtain_open_tv_on,light_off_curtain_close_tv_on);}
+        else if(light_off_curtain_close_tv_off.style.display === 'block'){replace(light_off_curtain_open_tv_off,light_off_curtain_close_tv_off);}
       }
     }
-}
-
-
+    if(response['facility'] === 'TV'){
+      if(response['action'] === 'turn on'){
+        if(light_on_curtain_open_tv_off.style.display === 'block'){replace(light_on_curtain_open_tv_on,light_on_curtain_open_tv_off);}
+        else if(light_off_curtain_open_tv_off.style.display === 'block'){replace(light_off_curtain_open_tv_on,light_off_curtain_open_tv_off);}
+        else if (light_on_curtain_close_tv_off.style.display === 'block'){replace(light_on_curtain_close_tv_on,light_on_curtain_close_tv_off);}
+        else if (light_off_curtain_close_tv_off.style.display === 'block'){replace(light_off_curtain_close_tv_on,light_off_curtain_close_tv_off);}
+      }
+      if(response['action'] === 'turn off'){
+        if(light_on_curtain_open_tv_on.style.display === 'block'){replace(light_on_curtain_open_tv_off,light_on_curtain_open_tv_on);}
+        else if(light_off_curtain_open_tv_on.style.display === 'block'){replace(light_off_curtain_open_tv_off,light_off_curtain_open_tv_on);}
+        else if (light_on_curtain_close_tv_on.style.display === 'block'){replace(light_on_curtain_close_tv_off,light_on_curtain_close_tv_on);}
+        else if (light_off_curtain_close_tv_on.style.display === 'block'){replace(light_off_curtain_close_tv_off,light_off_curtain_close_tv_on);}
+      }
+    }
+  }
 // function lightchanges(){
 //   // socket.emit('message',"steeve is a pig")
 //   if(light_on_curtain_close.style.display === 'block'){replace(light_off_curtain_close,light_on_curtain_close);}
@@ -89,7 +136,7 @@ function replace(on, off) {
   off.style.display="none";
 }
 function receive_print(){
-  theUrl = 'http://localhost:5009/api'
+  theUrl = 'http://localhost:5009/api/facility'
   var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
